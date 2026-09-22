@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌罗兰紫（见 eolisten doc/安卓客户端方案.md 2.2） -->
+    <color name="colorPrimary">#8B5CF6</color>
+    <color name="colorPrimaryDark">#8B5CF6</color>
+    <color name="colorAccent">#8B5CF6</color>
+</resources>

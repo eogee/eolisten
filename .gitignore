@@ -1,0 +1,16 @@
+node_modules/
+android/app/src/main/assets/capacitor.config.json
+android/app/build/
+android/.gradle/
+android/build/
+android/local.properties
+android/app/src/main/assets/public/
+*.keystore
+*.jks
+keystore.properties
+.DS_Store
+EoListen-*.apk
+*.apk.idsig
+build-log.txt
+.idea/
+*.iml
