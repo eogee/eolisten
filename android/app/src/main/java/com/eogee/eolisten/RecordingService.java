@@ -1,20 +1,27 @@
 package com.eogee.eolisten;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.getcapacitor.JSObject;
 
@@ -29,6 +36,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 录音前台服务：持有 MediaRecorder（AAC/MP4 即 .m4a，与转写管线直接兼容），
  * 锁屏/后台可录。Android 14+ 要求 startForeground 前 RECORD_AUDIO 必须已授予——
  * 由 RecorderPlugin.start() 先行校验（doc/安卓客户端方案.md 3.3）。
+ * 蜂窝通话自动暂停：READ_PHONE_STATE 授予后监听电话状态，响铃/接通即暂停、挂断自动恢复；
+ * 通话音频本身系统不允许第三方录制（平台限制），此机制只为避免录出整段静音。
  */
 public class RecordingService extends Service {
 
@@ -42,7 +51,19 @@ public class RecordingService extends Service {
     private static File outFile;
     private static long startMs, pausedAccMs, pauseMark;
     private static boolean recording, paused;
+    /** 因通话自动暂停的标记：挂断后只恢复这种暂停，用户手动暂停保持不动 */
+    private static volatile boolean pausedByCall;
     static volatile RecordingService instance;
+
+    /** 蜂窝通话状态广播（响铃/接通=暂停，空闲=恢复）；微信等 VoIP 不走此状态，检测不到属平台限制 */
+    private final BroadcastReceiver callStateReceiver = new BroadcastReceiver() {
+        @Override public void onReceive(Context context, Intent intent) {
+            String s = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+            boolean inCall = TelephonyManager.EXTRA_STATE_RINGING.equals(s)
+                    || TelephonyManager.EXTRA_STATE_OFFHOOK.equals(s);
+            handleCallState(inCall);
+        }
+    };
 
     /** JS 事件出口：pluginRef 由 RecorderPlugin.start() 登记，页面重载后重登记 */
     static volatile WeakReference<RecorderPlugin> pluginRef = new WeakReference<>(null);
@@ -67,7 +88,11 @@ public class RecordingService extends Service {
     };
 
     @Override public void onCreate() { super.onCreate(); instance = this; }
-    @Override public void onDestroy() { instance = null; super.onDestroy(); }
+    @Override public void onDestroy() {
+        if (instance != null) instance.unregisterCallReceiver(); // 兜底：未经 stopInternal 的异常销毁路径
+        instance = null;
+        super.onDestroy();
+    }
     @Override public IBinder onBind(Intent intent) { return null; }
 
     @Override
@@ -91,6 +116,7 @@ public class RecordingService extends Service {
     }
 
     private void beginRecording() throws IOException {
+        registerCallReceiver();
         outFile = new File(getCacheDir(), "eolisten-record-" + System.currentTimeMillis() + ".m4a");
         MediaRecorder r = new MediaRecorder();
         r.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -110,8 +136,47 @@ public class RecordingService extends Service {
         startMs = System.currentTimeMillis();
         pausedAccMs = 0;
         paused = false;
+        pausedByCall = false;
         recording = true;
         handler.postDelayed(poll, PROGRESS_MS);
+    }
+
+    /** 来电暂停/挂断恢复；暂停只动通话引起的，用户手动暂停不越权接管 */
+    private static void handleCallState(boolean inCall) {
+        if (!recording) return;
+        if (inCall) {
+            if (!paused) {
+                pausedByCall = true;
+                setPaused(true);
+                emitToJs("recordingCallPause");
+            }
+        } else if (pausedByCall) {
+            pausedByCall = false;
+            if (paused) {
+                setPaused(false);
+                emitToJs("recordingCallResume");
+            }
+        }
+    }
+
+    private void registerCallReceiver() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) return; // 未授权退回"来电抢占即中断"原有兜底
+        // 只收系统受保护广播，NOT_EXPORTED 不影响系统投递
+        ContextCompat.registerReceiver(this, callStateReceiver,
+                new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
+    }
+
+    private void unregisterCallReceiver() {
+        try {
+            unregisterReceiver(callStateReceiver);
+        } catch (IllegalArgumentException ignore) { /* 未注册过（无权限分支） */ }
+    }
+
+    private static void emitToJs(String event) {
+        RecorderPlugin p = pluginRef.get();
+        if (p != null) p.emit(event, new JSObject());
     }
 
     private static long elapsedMs() {
@@ -158,6 +223,7 @@ public class RecordingService extends Service {
         if (f != null) f.delete();
         outFile = null;
         if (instance != null) {
+            instance.unregisterCallReceiver();
             instance.handler.removeCallbacksAndMessages(null);
             instance.stopForeground(STOP_FOREGROUND_REMOVE);
             instance.stopSelf();

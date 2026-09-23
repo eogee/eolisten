@@ -38,8 +38,10 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- M2 录音：麦克风 + 前台服务（microphone 类型为 Android 14+ 硬要求），通知权限拿不到仅通知不显示 -->
+    <!-- M2 录音：麦克风 + 前台服务（microphone 类型为 Android 14+ 硬要求），通知权限拿不到仅通知不显示；
+         READ_PHONE_STATE 仅读通话状态用于来电自动暂停，拿不到则退回"来电抢占即中断"兜底 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />

@@ -25,7 +25,8 @@ import java.util.List;
  */
 @CapacitorPlugin(name = "Recorder", permissions = {
         @Permission(strings = { Manifest.permission.RECORD_AUDIO }, alias = "microphone"),
-        @Permission(strings = { Manifest.permission.POST_NOTIFICATIONS }, alias = "notifications")
+        @Permission(strings = { Manifest.permission.POST_NOTIFICATIONS }, alias = "notifications"),
+        @Permission(strings = { Manifest.permission.READ_PHONE_STATE }, alias = "phone")
 })
 public class RecorderPlugin extends Plugin {
 
@@ -42,6 +43,11 @@ public class RecorderPlugin extends Plugin {
         return getPermissionStates().get("microphone") == PermissionState.GRANTED;
     }
 
+    /** 通话状态权限（来电自动暂停用）；拒绝只少这个自动化，不影响录音 */
+    private boolean phoneGranted() {
+        return getPermissionStates().get("phone") == PermissionState.GRANTED;
+    }
+
     /** RecordingService 跨类发事件的公开出口（notifyListeners 是 protected，仅限插件子类内部） */
     public void emit(String event, JSObject data) {
         notifyListeners(event, data);
@@ -56,7 +62,7 @@ public class RecorderPlugin extends Plugin {
 
     @PluginMethod
     public void requestPermission(PluginCall call) {
-        if (micGranted()) {
+        if (micGranted() && phoneGranted()) {
             JSObject r = new JSObject();
             r.put("granted", true);
             call.resolve(r);
@@ -65,6 +71,7 @@ public class RecorderPlugin extends Plugin {
         List<String> aliases = new ArrayList<>();
         aliases.add("microphone");
         if (Build.VERSION.SDK_INT >= 33) aliases.add("notifications"); // 通知权限拿不到也照录，仅通知不显示
+        if (!phoneGranted()) aliases.add("phone"); // 老用户麦克风已授予也会补弹一次，用于通话自动暂停
         requestPermissionForAliases(aliases.toArray(new String[0]), call, "permCallback");
     }
 
