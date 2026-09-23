@@ -14,3 +14,6 @@ EoListen-*.apk
 build-log.txt
 .idea/
 *.iml
+
+# Gitee API 私人令牌（发 Release 用，不入库）
+gitee-token.txt
