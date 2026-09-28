@@ -41,4 +41,4 @@ EoListen 是一套云端语音转写服务，一个账号贯通三端：
 
 ## 镜像仓库
 
-本项目的发行版同步发布于：Gitee（本仓库）· GitHub · GitCode。三处附件一致，任选就近站点下载。
+本项目的发行版同步发布于：Gitee（本仓库）· [GitHub](https://github.com/eogee/eolisten) · [GitCode](https://gitcode.com/eogee/eolisten)。三处附件一致，任选就近站点下载。
