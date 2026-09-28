@@ -12,8 +12,6 @@ EoListen is a cloud speech-to-text service with one account across three apps:
 
 One account across all three: shared quota (15 min/day free, 60 min/day premium), hotwords and tasks sync in real time.
 
-> This repository hosts the official installers (Releases) only.
-
 ## Download & Update
 
 Grab the latest Windows installer and Android APK from the **[Releases](releases)** page.
