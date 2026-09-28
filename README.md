@@ -16,11 +16,11 @@ One account across all three: shared quota (15 min/day free, 60 min/day premium)
 
 Grab the latest Windows installer and Android APK from the **[Releases](releases)** page.
 
-### What's new in v0.2.1
+### What's new in v0.2.2
 
-- Login and settings unified into the web app — sign in once in the main window and the voice input inherits your session automatically
-- Tray settings now opens the web settings page, with a new "Desktop" card (launch at login, voice input toggle)
-- Android re-released under the unified version number (same features as 0.1.2, including auto-pause during calls)
+- Android: fixed the squashed splash-screen logo and the garbled recording notification icon; new branded splash screen
+- Web: new footer (version / website / one-tap-copy contacts) plus a version-notes dialog
+- In the Android app the footer gives way to an "About" card in Settings; external links now open in the system browser
 
 Full notes for every version live on the [Releases](releases) page. Apps check for updates on launch: the web app is always current, while Android and Windows prompt you when a new build ships.
 
