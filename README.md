@@ -90,9 +90,9 @@ keyPassword=***
    Windows 侧 `WIN_VERSION_CODE` +1、构建产物升到同号（壳启动比对用，各端必须一致）
 3. `bash scripts/build-release.sh`（Gradle 不做签名，脚本统一 zipalign → apksigner v1+v2，
    产出仓库根 `EoListen-<versionName>.apk` 并自动验签）
-4. 在本仓库发 Release（tag `vX.Y.Z`，不带平台后缀），同时上传 APK 与 `eolisten-code`
-   `desktop/installer/dist/` 下的 Windows Setup；`config.py` 的 `APP_APK_URL` 与服务器
-   `.env` 的 `WIN_INSTALLER_URL` 指向对应附件直链，重启 eolisten 服务
+4. 在本仓库发 Release（tag `vX.Y.Z`，不带平台后缀），同时上传 APK 与 Windows Setup
+   （产品桌面端构建产物）；产品服务端配置 `config.py` 的 `APP_APK_URL` 与服务器
+   `.env` 的 `WIN_INSTALLER_URL` 指向对应附件直链，重启服务
    （下载页 `/listen/app/` 与两端壳内更新弹窗都读这几处）
 
 > 签名必须在 build.gradle 之外做：minSdk>=24 时 AGP 自动签名只打 v2，系统安装器能装，
