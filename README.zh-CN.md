@@ -38,7 +38,3 @@ EoListen 是一套云端语音转写服务，一个账号贯通三端：
 - **官网**：<https://eogee.com> ｜ **产品页/下载页**：<https://eogee.com/listen/app/>
 - **QQ**：3886370035 ｜ **微信**：eogee2022
 - **问题反馈**：推荐应用内页脚「问题反馈」直接提交（支持截图），直达开发者邮箱 eogee@qq.com
-
-## 镜像仓库
-
-本项目的发行版同步发布于：Gitee（本仓库）· [GitHub](https://github.com/eogee/eolisten) · [GitCode](https://gitcode.com/eogee/eolisten)。三处附件一致，任选就近站点下载。

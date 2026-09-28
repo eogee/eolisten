@@ -38,7 +38,3 @@ Full notes for every version live on the [Releases](releases) page. Apps check f
 - **Website**: <https://eogee.com> · **Product & downloads**: <https://eogee.com/listen/app/>
 - **QQ**: 3886370035 · **WeChat**: eogee2022
 - **Feedback**: the "Feedback" entry in the app footer (screenshots supported) reaches the developer at eogee@qq.com
-
-## Mirrors
-
-Releases are published simultaneously on: Gitee (this repo) · [GitHub](https://github.com/eogee/eolisten) · [GitCode](https://gitcode.com/eogee/eolisten). All three carry identical attachments — pick whichever is fastest for you.
