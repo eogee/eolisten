@@ -1,44 +1,44 @@
-# EoListen · 岳极留声
+# EoListen · Yueji
 
-> 留存每一秒声音中的细节 —— 录音转写、说话人分离、AI 会议整理、热词库、语音输入法
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-EoListen 是一套云端语音转写服务，一个账号贯通三端：
+> Preserve every detail in every second of sound — audio transcription, speaker separation, AI meeting minutes, hotword library, voice input
 
-- **网页版**（[eogee.com/listen](https://eogee.com/listen/)）：上传录音/视频转写、会议转写工作台（说话人指认 + AI 纪要与任务清单）、视频字幕、热词库
-- **安卓客户端**（APK）：会议现场一键录音，原生前台服务锁屏可录，来电自动暂停
-- **Windows 桌面版**：转写工作台桌面窗口，**内置语音输入法**——左Ctrl+左Alt 按住说话，松开出字，任意应用可输入
+EoListen is a cloud speech-to-text service with one account across three apps:
 
-三端同账号、同额度（普通会员每日 15 分钟 / 极会员 60 分钟）、热词与任务实时同步。
+- **Web** ([eogee.com/listen](https://eogee.com/listen/)): upload audio/video for transcription, meeting workspace (speaker naming + AI minutes & action items), video subtitles, hotword library
+- **Android**: one-tap meeting recording with a native foreground service — records with the screen off, auto-pauses during phone calls
+- **Windows**: the transcription workspace as a desktop app with a **built-in voice input** — hold Left Ctrl + Left Alt, speak, and the text lands in any app
 
-> 本仓库仅用于发布 EoListen 安装包（Releases），不含源码。
+One account across all three: shared quota (15 min/day free, 60 min/day premium), hotwords and tasks sync in real time.
 
-## 下载 v0.2.1（安卓与 Windows 统一版本）
+> This repository hosts the official installers (Releases) only.
 
-| 平台 | 下载 | 说明 |
-|---|---|---|
-| Windows 10/11 | [EoListen-Setup-0.2.1.exe](https://gitee.com/eogee/eolisten/releases/download/v0.2.1/EoListen-Setup-0.2.1.exe) | 双击安装，per-user 免管理员；SmartScreen 提示时选「更多信息 → 仍要运行」（当前未签名） |
-| Android | [EoListen-0.2.1.apk](https://gitee.com/eogee/eolisten/releases/download/v0.2.1/EoListen-0.2.1.apk) | 系统提示「未知来源」时选择允许 |
+## Download & Update
 
-也可以在 [下载页](https://eogee.com/listen/app/) 或 [Releases](https://gitee.com/eogee/eolisten/releases) 获取历史版本。三端同号发版：一个版本号一个 Release，APK 与 Windows 安装包双附件并排。
+Grab the latest Windows installer and Android APK from the **[Releases](releases)** page.
 
-## 更新机制
+### What's new in v0.2.1
 
-- **网页端**：持续部署，打开即最新
-- **安卓 / Windows**：应用内置版本检查（对照服务端 latestVersionCode），有新版弹提示，确认后跳转下载
+- Login and settings unified into the web app — sign in once in the main window and the voice input inherits your session automatically
+- Tray settings now opens the web settings page, with a new "Desktop" card (launch at login, voice input toggle)
+- Android re-released under the unified version number (same features as 0.1.2, including auto-pause during calls)
 
-## 数据与隐私
+Full notes for every version live on the [Releases](releases) page. Apps check for updates on launch: the web app is always current, while Android and Windows prompt you when a new build ships.
 
-- 源音频转写完成后立即删除，仅保留文字结果
-- 热词资料仅用于提取热词候选，原文用完即删
-- AI 整理的参考资料仅在整理期间使用，完成后立即删除
-- 网页端录音的本地原件只存在你自己的浏览器中
+## Privacy
 
-## 联系方式
+- Source audio is deleted right after transcription; only the text result is kept
+- Hotword material is used only to extract candidates and discarded immediately
+- AI-summary reference material is used only during summarization and deleted afterwards
+- Web recordings stay in your own browser
 
-- **官网**：<https://eogee.com> ｜ **产品页/下载页**：<https://eogee.com/listen/app/>
-- **QQ**：3886370035 ｜ **微信**：eogee2022
-- **问题反馈**：推荐应用内页脚「问题反馈」直接提交（支持截图），直达开发者邮箱 eogee@qq.com
+## Contact
 
-## 镜像仓库
+- **Website**: <https://eogee.com> · **Product & downloads**: <https://eogee.com/listen/app/>
+- **QQ**: 3886370035 · **WeChat**: eogee2022
+- **Feedback**: the "Feedback" entry in the app footer (screenshots supported) reaches the developer at eogee@qq.com
 
-本项目的发行版同步发布于：Gitee（本仓库）· [GitHub](https://github.com/eogee/eolisten) · [GitCode](https://gitcode.com/eogee/eolisten)。三处附件一致，任选就近站点下载。
+## Mirrors
+
+Releases are published simultaneously on: Gitee (this repo) · [GitHub](https://github.com/eogee/eolisten) · [GitCode](https://gitcode.com/eogee/eolisten). All three carry identical attachments — pick whichever is fastest for you.
