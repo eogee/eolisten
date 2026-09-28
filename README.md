@@ -31,20 +31,12 @@ EoListen 是一套云端语音转写服务，一个账号贯通三端：
 - AI 整理的参考资料仅在整理期间使用，完成后立即删除
 - 网页端录音的本地原件只存在你自己的浏览器中
 
-## 仓库导航
-
-| 仓库 | 内容 | 可见性 |
-|---|---|---|
-| `eogee/eolisten`（本仓库） | 安卓壳源码 + 全平台安装包 Release | 公开 |
-| `eogee/eolisten-code` | 产品源码：后端（FastAPI）、网页前端、Windows 桌面版（Python） | 私有 |
-
 ---
 
 ## 安卓壳开发指南（本仓库源码）
 
 本仓库的 `android/` 是 Capacitor 远程加载壳：WebView 加载 `https://eogee.com/listen/`，
 业务全部留在网页端，UI 更新即时生效，只有原生插件变更才需要发新 APK。
-设计文档见 `eolisten-code` 仓库 `doc/安卓客户端方案.md`。
 
 ### 环境准备（一次性）
 
@@ -69,7 +61,7 @@ npx cap sync          # 占位 www 与插件同步到 android/
 
 | 插件 | 能力 | 备注 |
 |------|------|------|
-| `@capacitor/app` | 返回键（可后退则后退，2 秒二次确认退出）、getInfo（版本比对） | 前端入口在 eolisten-code `js/app.js` 的 `capInit()` |
+| `@capacitor/app` | 返回键（可后退则后退，2 秒二次确认退出）、getInfo（版本比对） | 前端入口在网页端 `js/app.js` 的 `capInit()` |
 | `Recorder`（本仓库自定义） | 原生录音：前台服务 + MediaRecorder（AAC/.m4a），锁屏/后台可录，暂停/续录，来电抢占自动保存 | 权限：RECORD_AUDIO（先说明后弹窗）+ 前台服务 microphone 类型；前端入口 `recInit()` |
 | `Shell`（本仓库自定义） | `openExternal({url})` 系统浏览器打开外链；`openAppSettings()` 麦克风被拒后跳应用设置 | APK 下载必须在系统浏览器完成 |
 | `@capacitor/splash-screen` | 冷启动 splash 关闭（走系统 12+ 图标 splash） | launchShowDuration: 0 |
@@ -94,7 +86,7 @@ keyPassword=***
 发版流程（**一版双包**：安卓与 Windows 同号，同一个 Gitee Release 挂 APK + Setup 双附件）：
 
 1. `android/app/build.gradle` 里 versionCode 递增（+1）、versionName 更新为产品版本号
-2. `eolisten-code` 仓库 `config.py` 同步 `APP_VERSION_CODE` / `APP_VERSION_NAME`，
+2. 产品服务端配置 `config.py` 同步 `APP_VERSION_CODE` / `APP_VERSION_NAME`，
    Windows 侧 `WIN_VERSION_CODE` +1、构建产物升到同号（壳启动比对用，各端必须一致）
 3. `bash scripts/build-release.sh`（Gradle 不做签名，脚本统一 zipalign → apksigner v1+v2，
    产出仓库根 `EoListen-<versionName>.apk` 并自动验签）
