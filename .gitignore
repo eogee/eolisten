@@ -1,0 +1,8 @@
+# 门面仓（仅 README/LICENSE）：其余一律视为本地发版工件，默认全部忽略——
+# 目录里存放 gitee-token.txt / github-token.txt / eolisten.keystore（密钥与签名私钥，严禁入库）、
+# 各版 APK/idsig、发版脚本与 release 正文等；确需入库的新文件在此显式放开
+/*
+!/README.md
+!/README.zh-CN.md
+!/LICENSE
+!/.gitignore
