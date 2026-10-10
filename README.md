@@ -16,11 +16,12 @@ One account across all three: shared quota (15 min/day free, 60 min/day premium)
 
 Grab the latest Windows installer and Android APK from the **[Releases](releases)** page.
 
-### What's new in v0.3.2
+### What's new in v0.3.5
 
-- Android: rebuilt and polished the 9-key keyboard (letters-first keycaps, punctuation quick column, pinyin separator key, three-dot ellipsis, Chinese punctuation on the first symbol page, a steady composition row); number-keyboard digits now always type literally; a backspace button on the voice panel
-- Windows: fixed the repeated-character bug when dictating into WeChat 4.x and other Qt apps; fixed long stalls after long recordings and stale results re-typing into the next recording; tray checkmarks now sync with web settings within 3 seconds
-- Web: Android download card now carries the "built-in voice input" badge; voice-input tab checkboxes stay in sync with the tray
+- New: Phone as microphone — pair your phone as the pickup for a PC without a mic over LAN (QR or manual pairing); recognition runs on the PC and audio never leaves your local network
+- New: Never lose speech — failed recognitions are stashed and retried automatically on both desktop and Android, delivered within 10 minutes; the Android voice panel is now tap-to-talk (tap to start, tap again to stop)
+- Improved: Smarter punctuation for choppy speech — periods land only at semantic boundaries, short pauses no longer shatter sentences
+- Desktop: optional tray toggle to strip filler words from recognition
 
 Full notes for every version live on the [Releases](releases) page. Apps check for updates on launch: the web app is always current, while Android and Windows prompt you when a new build ships.
 
